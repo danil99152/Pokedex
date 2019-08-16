@@ -13,7 +13,7 @@ class PokeService(private val pokeApi: PokeApi) {
     }
 
     fun getPokemon(entry: String): Single<Pokemon> {
-        Log.i("PokeService", "fetching a img_pokemon $entry")
+        Log.i("PokeService", "fetching a pokemon $entry")
         return pokeApi.getPokemon(entry)
     }
 }

@@ -28,10 +28,9 @@ interface Dao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPokemon(pokemon: Pokemon): Completable
 
-    @Query("delete from PokeListEntry")
-    fun deleteAllEntries(): Completable
-
-    @Query("delete from Pokemon")
-    fun deleteAllPokemons(): Completable
-
+//    @Query("delete from PokeListEntry")
+//    fun deleteAllEntries(): Completable
+//
+//    @Query("delete from Pokemon")
+//    fun deleteAllPokemons(): Completable
 }

@@ -27,7 +27,7 @@ class PokeDetailsFragment : Fragment() {
         const val TAG = "PokeDetailsFragment"
     }
 
-    lateinit var binding: FragmentPokeDetailsBinding
+    private lateinit var binding: FragmentPokeDetailsBinding
     private lateinit var alertDialog: AlertDialog
 
     override fun onCreateView(
@@ -40,7 +40,6 @@ class PokeDetailsFragment : Fragment() {
         val entry = PokeDetailsFragmentArgs.fromBundle(arguments!!).pokemonEntry
         Log.i(TAG, "entry received: $entry")
         loadPokemon(entry)
-
         return binding.root
     }
 

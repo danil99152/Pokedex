@@ -18,7 +18,7 @@ class DatabaseService(private val dao: Dao) {
     }
 
     fun getPokemon(entry: Int): Maybe<Pokemon>{
-        Log.i("PokeDB", "queueing a img_pokemon $entry")
+        Log.i("PokeDB", "queueing a pokemon $entry")
         return dao.getPokemon(entry)
     }
 
@@ -30,11 +30,11 @@ class DatabaseService(private val dao: Dao) {
         return dao.insertPokemon(pokemon)
     }
 
-    fun deletePokemons(): Completable{
-        return dao.deleteAllPokemons()
-    }
-
-    fun deleteEntries(): Completable{
-        return dao.deleteAllEntries()
-    }
+//    fun deletePokemons(): Completable{
+//        return dao.deleteAllPokemons()
+//    }
+//
+//    fun deleteEntries(): Completable{
+//        return dao.deleteAllEntries()
+//    }
 }

@@ -10,17 +10,6 @@ interface PokeApi {
     @GET("pokedex/1")
     fun getPokemonList(): Single<PokeListEntryWrapper>
 
-    @GET("img_pokemon/{entry}")
+    @GET("pokemon/{entry}")
     fun getPokemon(@Path("entry") entry: String): Single<Pokemon>
-
-
-
-
-
-
-    @GET("pokedex/1")
-    fun getText(): Single<String>
-
-    @GET("img_pokemon/{entry}")
-    fun getPokemonText(@Path("entry") entry: String): Single<String>
 }

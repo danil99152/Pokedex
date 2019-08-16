@@ -1,10 +1,9 @@
 package com.danilkomyshev.pokedex.database
 
+import android.util.Log
 import com.danilkomyshev.pokedex.entity.PokeListEntry
 import com.danilkomyshev.pokedex.entity.Pokemon
 import com.danilkomyshev.pokedex.network.PokeService
-import android.util.Log
-import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
 
@@ -25,7 +24,7 @@ class PokemonRepository(
     }
 
     fun getPokemon(query: Int): Single<Pokemon> {
-        Log.i("Poke Repo", "getting a img_pokemon: $query")
+        Log.i("Poke Repo", "getting a pokemon: $query")
         return Maybe.concat(pokeDatabaseService.getPokemon(query), fetchAndCachePokemon(query))
             .firstElement()
             .toSingle()
@@ -46,19 +45,19 @@ class PokemonRepository(
 
         return fetch
             .flatMapCompletable {
-                Log.i("Poke Repo", "inserting a img_pokemon: $it")
+                Log.i("Poke Repo", "inserting a pokemon: $it")
                 pokeDatabaseService.insertPokemon(it)
             }
             .andThen(fetch.toMaybe())
     }
 
-    fun deletePokemons(): Completable{
-        Log.i("Poke Repo", "DROPPING THE POKEMON TABLE!")
-        return pokeDatabaseService.deletePokemons()
-    }
-
-    fun deleteEntries(): Completable{
-        Log.i("Poke Repo", "DROPPING THE ENTRIES TABLE!")
-        return pokeDatabaseService.deleteEntries()
-    }
+//    fun deletePokemons(): Completable{
+//        Log.i("Poke Repo", "DROPPING THE POKEMON TABLE!")
+//        return pokeDatabaseService.deletePokemons()
+//    }
+//
+//    fun deleteEntries(): Completable{
+//        Log.i("Poke Repo", "DROPPING THE ENTRIES TABLE!")
+//        return pokeDatabaseService.deleteEntries()
+//    }
 }
