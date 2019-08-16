@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph" app:startDestination="@id/pokeListFragment">
+
+    <fragment android:id="@+id/pokeListFragment" android:name="com.danilkomyshev.pokedex.PokeListFragment"
+              android:label="PokeListFragment">
+        <action android:id="@+id/action_pokeListFragment_to_pokeDetailsFragment"
+                app:destination="@id/pokeDetailsFragment" app:enterAnim="@anim/nav_default_enter_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        />
+    </fragment>
+    <fragment android:id="@+id/pokeDetailsFragment" android:name="com.danilkomyshev.pokedex.PokeDetailsFragment"
+              android:label="fragment_poke_details" tools:layout="@layout/fragment_poke_details">
+        <argument android:name="pokemonEntry" app:argType="integer"/>
+        <action android:id="@+id/action_pokeDetailsFragment_to_pokeListFragment"
+                app:destination="@id/pokeListFragment" app:popUpTo="@+id/pokeListFragment" app:popUpToInclusive="true"/>
+    </fragment>
+</navigation>
