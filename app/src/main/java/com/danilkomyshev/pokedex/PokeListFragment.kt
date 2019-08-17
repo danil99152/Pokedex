@@ -96,10 +96,10 @@ class PokeListFragment : Fragment(), PokeListClickListener {
         }
     }
 
-    override fun onClick(entry: Int) {
-        Log.i(TAG, "clicked on entry: $entry")
+    override fun onClick(id: Int) {
+        Log.i(TAG, "clicked on pokemon: $id")
         this.findNavController().navigate(
-            PokeListFragmentDirections.actionPokeListFragmentToPokeDetailsFragment(entry)
+            PokeListFragmentDirections.actionPokeListFragmentToPokeDetailsFragment(id)
         )
     }
 
@@ -138,12 +138,24 @@ class PokeListFragment : Fragment(), PokeListClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            //TODO: создать список избранных и метод выбора рандомного покемона
+            //TODO: создать список избранных
 //            R.id.list_of_favourites ->
-//            R.id.random_poke ->
+            R.id.random_poke -> randomPoke()
         }
 
         return false
+    }
+
+    private fun randomPoke(){
+        disposables.add(
+        pokemonRepository.initEntries().applySchedulers().subscribe({
+            val random = (1 .. it.size).random()
+            Log.i("randomPoke", "randomed pokemon: $random")
+            onClick(random)
+        }, {
+            Log.e("PokeListFragment", it.toString())
+            showError(it.toString())
+        }))
     }
 
     override fun onDestroy() {
@@ -152,26 +164,26 @@ class PokeListFragment : Fragment(), PokeListClickListener {
     }
 
     private fun firstEntryLoad() {
-        Log.i("PokeListPresenter", "first entry load")
+        Log.i("PokeListFragment", "first entry load")
         startLoading()
 
         disposables.add(
             pokemonRepository.initEntries()
                 .applySchedulers()
                 .subscribe({
-                    Log.i("PokeListPresenter", "on load finish. Items loaded: ${it.size}")
+                    Log.i("PokeListFragment", "on load finish. Items loaded: ${it.size}")
                     searchFieldEnabled(true)
                     setEntries(it)
                 },
                     {
-                        Log.e("PokeListPresenter", it.toString())
+                        Log.e("PokeListFragment", it.toString())
                         showError(it.toString())
                     })
         )
     }
 
     private fun queryEntries(query: String) {
-        Log.i("PokeListPresenter", "loading entries for $query ...")
+        Log.i("PokeListFragment", "loading entries for $query ...")
         startLoading()
 
         disposables.add(
@@ -179,11 +191,11 @@ class PokeListFragment : Fragment(), PokeListClickListener {
                 .applySchedulers()
                 .subscribe(
                     {
-                        Log.i("PokeListPresenter", "on load finish. Items loaded: ${it.size}")
+                        Log.i("PokeListFragment", "on load finish. Items loaded: ${it.size}")
                         setEntries(it)
 
                     }, {
-                        Log.e("PokeListPresenter", it.toString())
+                        Log.e("PokeListFragment", it.toString())
                         showError(it.toString())
                     }
                 )
