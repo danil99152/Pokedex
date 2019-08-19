@@ -5,7 +5,7 @@
     <string name="pokedex">Pokedex</string>
     <string name="empty_text">No pokemons to show</string>
     <string name="pokemon_image">pokemon image</string>
-    <string name="type">Type</string>
+    <string name="type">Type:</string>
     <string name="electric">Electric</string>
     <string name="height">Height:</string>
     <string name="weight">Weight</string>
