@@ -96,10 +96,10 @@ class PokeListFragment : Fragment(), PokeListClickListener {
         }
     }
 
-    override fun onClick(id: Int) {
-        Log.i(TAG, "clicked on pokemon: $id")
+    override fun onClick(entry: Int) {
+        Log.i(TAG, "clicked on pokemon: $entry")
         this.findNavController().navigate(
-            PokeListFragmentDirections.actionPokeListFragmentToPokeDetailsFragment(id)
+            PokeListFragmentDirections.actionPokeListFragmentToPokeDetailsFragment(entry)
         )
     }
 
@@ -153,7 +153,7 @@ class PokeListFragment : Fragment(), PokeListClickListener {
             Log.i("randomPoke", "randomed pokemon: $random")
             onClick(random)
         }, {
-            Log.e("PokeListFragment", it.toString())
+            Log.e(TAG, it.toString())
             showError(it.toString())
         }))
     }
@@ -164,26 +164,26 @@ class PokeListFragment : Fragment(), PokeListClickListener {
     }
 
     private fun firstEntryLoad() {
-        Log.i("PokeListFragment", "first entry load")
+        Log.i(TAG, "first entry load")
         startLoading()
 
         disposables.add(
             pokemonRepository.initEntries()
                 .applySchedulers()
                 .subscribe({
-                    Log.i("PokeListFragment", "on load finish. Items loaded: ${it.size}")
+                    Log.i(TAG, "on load finish. Items loaded: ${it.size}")
                     searchFieldEnabled(true)
                     setEntries(it)
                 },
                     {
-                        Log.e("PokeListFragment", it.toString())
+                        Log.e(TAG, it.toString())
                         showError(it.toString())
                     })
         )
     }
 
     private fun queryEntries(query: String) {
-        Log.i("PokeListFragment", "loading entries for $query ...")
+        Log.i(TAG, "loading entries for $query ...")
         startLoading()
 
         disposables.add(
@@ -191,11 +191,11 @@ class PokeListFragment : Fragment(), PokeListClickListener {
                 .applySchedulers()
                 .subscribe(
                     {
-                        Log.i("PokeListFragment", "on load finish. Items loaded: ${it.size}")
+                        Log.i(TAG, "on load finish. Items loaded: ${it.size}")
                         setEntries(it)
 
                     }, {
-                        Log.e("PokeListFragment", it.toString())
+                        Log.e(TAG, it.toString())
                         showError(it.toString())
                     }
                 )
