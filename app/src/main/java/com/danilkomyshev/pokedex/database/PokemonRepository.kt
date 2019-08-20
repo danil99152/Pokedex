@@ -19,6 +19,14 @@ class PokemonRepository(
             .toSingle()
     }
 
+    fun getFavPokemons(fav : Boolean) : Single<List<PokeListEntry>>{
+        return pokeDatabaseService.getFavPokemons(fav)
+    }
+
+    fun isPokeFav (query: Int) : Boolean{
+        return pokeDatabaseService.isPokeFav(query)
+    }
+
     fun getEntries(query: String): Single<List<PokeListEntry>> {
         return pokeDatabaseService.getEntries(query)
     }

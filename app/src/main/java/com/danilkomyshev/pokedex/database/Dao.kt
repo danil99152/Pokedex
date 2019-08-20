@@ -22,6 +22,12 @@ interface Dao {
     @Query("select * from Pokemon where id = :entry")
     fun getPokemon(entry: Int): Maybe<Pokemon>
 
+    @Query("select * from PokeListEntry where isFavourite = :fav")
+    fun getFavPokemons(fav: Boolean): Single<List<PokeListEntry>>
+
+    @Query("select isFavourite from Pokemon where id = :entry")
+    fun isPokeFav(entry: Int): Boolean
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllEntries(entries: List<PokeListEntry>): Completable
 

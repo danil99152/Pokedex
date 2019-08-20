@@ -1,6 +1,7 @@
 package com.danilkomyshev.pokedex.dicomponent
 
 import android.content.Context
+import com.danilkomyshev.pokedex.FavListFragment
 import com.danilkomyshev.pokedex.PokeDetailsFragment
 import com.danilkomyshev.pokedex.PokeListFragment
 import com.danilkomyshev.pokedex.dimodules.ContextModule
@@ -15,4 +16,5 @@ interface AppComponent {
 
     fun inject(pokeDetailsFragment: PokeDetailsFragment)
     fun inject(pokeListFragment: PokeListFragment)
+    fun inject(favListFragment: FavListFragment)
 }

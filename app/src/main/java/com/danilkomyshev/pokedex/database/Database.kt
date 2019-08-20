@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 
-@Database(entities = [PokeListEntry::class, Pokemon::class], version = 1)
+@Database(entities = [PokeListEntry::class, Pokemon::class], version = 2)
 @TypeConverters(MyConverters::class)
 abstract class Database : RoomDatabase() {
     abstract val dao: Dao

@@ -50,6 +50,10 @@ class PokeDetailsFragment : Fragment() {
             .subscribe ({ pokemon ->
                 Log.i(TAG, "a pokemon loaded: $pokemon")
                 bindPokemon(pokemon)
+                if (pokemonRepository.isPokeFav(entry)){
+                    findViewById<View>(R.id.fabFav_off).visibility = View.GONE
+                    findViewById<View>(R.id.fabFav_on).visibility = View.VISIBLE
+                }
             },{
                 displayError(it)
             })

@@ -33,5 +33,6 @@ data class Pokemon(
     val weight: Int,
     val sprite: String,
     val type1: PokemonType,
-    val type2: PokemonType
+    val type2: PokemonType,
+    val isFavourite : Boolean = false
 )
