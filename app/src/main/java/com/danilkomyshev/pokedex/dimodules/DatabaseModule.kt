@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.danilkomyshev.pokedex.database.Dao
 import com.danilkomyshev.pokedex.database.Database
+import com.danilkomyshev.pokedex.database.MIGRATION_1_2
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -20,6 +21,6 @@ class DatabaseModule {
     @Provides
     @Singleton
     fun providePokemonDataBase(context: Context): Database {
-        return Room.databaseBuilder(context.applicationContext, Database::class.java, "pokemons").build()
+        return Room.databaseBuilder(context.applicationContext, Database::class.java, "pokemons").addMigrations(MIGRATION_1_2).build()
     }
 }
