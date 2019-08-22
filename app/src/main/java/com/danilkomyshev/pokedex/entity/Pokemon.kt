@@ -34,5 +34,5 @@ data class Pokemon(
     val sprite: String,
     val type1: PokemonType,
     val type2: PokemonType,
-    val isFavourite : Boolean = false
+    val isFavourite : Int = 0
 )

@@ -4,9 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -15,7 +13,13 @@ import com.danilkomyshev.pokedex.adapters.PokeListClickListener
 import com.danilkomyshev.pokedex.database.PokemonRepository
 import com.danilkomyshev.pokedex.databinding.FragmentFavListBinding
 import com.danilkomyshev.pokedex.entity.PokeListEntry
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
+import io.reactivex.FlowableOnSubscribe
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class FavListFragment : Fragment(), PokeListClickListener {
@@ -52,7 +56,7 @@ class FavListFragment : Fragment(), PokeListClickListener {
         startLoading()
 
         disposables.add(
-            pokemonRepository.getFavPokemons(true)
+            pokemonRepository.getFavPokemons(1)
                 .applySchedulers()
                 .subscribe({
                     Log.i(TAG, "on load finish. Items loaded: ${it.size}")
@@ -116,5 +120,84 @@ class FavListFragment : Fragment(), PokeListClickListener {
         if (emptyList) {
             binding.emptyView.visibility = View.VISIBLE
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.list_of_pokemons -> toList()
+            R.id.random_poke -> randomPoke()
+        }
+        return false
+    }
+
+    private fun toList() {
+        this.findNavController().navigate(
+            FavListFragmentDirections.actionFavListFragmentToPokeListFragment()
+        )
+    }
+
+    private fun randomPoke(){
+        disposables.add(
+            pokemonRepository.getFavPokemons(1).applySchedulers().subscribe({
+                val random = (1 .. it.size).random()
+                Log.i("randomPoke", "randomed favourite pokemon: $random")
+                onClick(random)
+            }, {
+                Log.e(PokeListFragment.TAG, it.toString())
+                showError(it.toString())
+            }))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fav_list_menu, menu)
+        searchView = menu.findItem(R.id.search_bar)?.actionView as SearchView
+        searchFieldEnabled(false)
+
+        disposables.add(
+            Flowable.create(FlowableOnSubscribe<String> { subscriber ->
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        subscriber.onNext(query!!)
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        subscriber.onNext(newText!!)
+                        return false
+                    }
+                })
+            }, BackpressureStrategy.LATEST)
+                .subscribeOn(Schedulers.io())
+                .map { text -> text.trim() }
+                .debounce(200, TimeUnit.MILLISECONDS)
+                .distinctUntilChanged()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    queryEntries(it)
+                }, {
+                    Log.e(PokeListFragment.TAG, it.toString())
+                })
+        )
+    }
+
+    private fun queryEntries(query: String) {
+        Log.i(PokeListFragment.TAG, "loading entries for $query ...")
+        startLoading()
+
+        disposables.add(
+            pokemonRepository.getEntries(query)
+                .applySchedulers()
+                .subscribe(
+                    {
+                        Log.i(PokeListFragment.TAG, "on load finish. Favourite pokemons loaded: ${it.size}")
+                        setEntries(it)
+
+                    }, {
+                        Log.e(PokeListFragment.TAG, it.toString())
+                        showError(it.toString())
+                    }
+                )
+        )
     }
 }

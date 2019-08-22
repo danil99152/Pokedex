@@ -30,13 +30,23 @@ class DatabaseService(private val dao: Dao) {
         return dao.insertPokemon(pokemon)
     }
 
-    fun getFavPokemons(fav: Boolean) : Single<List<PokeListEntry>> {
-        return if (fav) dao.getFavPokemons(fav)
+    fun getFavPokemons(fav: Int) : Single<List<PokeListEntry>> {
+        return if (fav == 1) dao.getFavPokemons(fav)
         else dao.getAllEntries()
     }
 
-    fun isPokeFav (entry: Int) : Boolean{
+    fun isPokeFav (entry: Int) : Int{
         return dao.isPokeFav(entry)
+    }
+
+    fun toFavourite (entry: Int) :Completable{
+        dao.toFavouritePokeListEntry(entry)
+        return dao.toFavouritePokemon(entry)
+    }
+
+    fun toUsual (entry: Int) : Completable{
+        dao.toUsualPokeListEntry(entry)
+        return dao.toUsualPokemon(entry)
     }
 
 //    fun deletePokemons(): Completable{

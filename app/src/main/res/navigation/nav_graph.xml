@@ -9,6 +9,9 @@
                 app:destination="@id/pokeDetailsFragment" app:enterAnim="@anim/nav_default_enter_anim"
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
         />
+        <action android:id="@+id/action_pokeListFragment_to_favListFragment"
+                app:destination="@id/favListFragment"
+                app:popUpTo="@+id/pokeListFragment" app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment android:id="@+id/pokeDetailsFragment" android:name="com.danilkomyshev.pokedex.PokeDetailsFragment"
@@ -24,5 +27,8 @@
                 app:destination="@id/pokeDetailsFragment" app:enterAnim="@anim/nav_default_enter_anim"
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
         />
+        <action android:id="@+id/action_favListFragment_to_pokeListFragment"
+                app:destination="@id/pokeListFragment"
+                app:popUpTo="@+id/pokeListFragment" app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

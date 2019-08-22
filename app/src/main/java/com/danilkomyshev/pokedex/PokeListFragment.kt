@@ -136,10 +136,15 @@ class PokeListFragment : Fragment(), PokeListClickListener {
         )
     }
 
+    private fun toFav() {
+        this.findNavController().navigate(
+            PokeListFragmentDirections.actionPokeListFragmentToFavListFragment()
+        )
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            //TODO: создать список избранных
-//            R.id.list_of_favourites ->
+            R.id.list_of_favourites -> toFav()
             R.id.random_poke -> randomPoke()
         }
 
@@ -191,7 +196,7 @@ class PokeListFragment : Fragment(), PokeListClickListener {
                 .applySchedulers()
                 .subscribe(
                     {
-                        Log.i(TAG, "on load finish. Items loaded: ${it.size}")
+                        Log.i(TAG, "on load finish. All pokemons loaded: ${it.size}")
                         setEntries(it)
 
                     }, {

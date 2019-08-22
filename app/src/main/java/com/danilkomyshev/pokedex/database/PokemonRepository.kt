@@ -4,6 +4,7 @@ import android.util.Log
 import com.danilkomyshev.pokedex.entity.PokeListEntry
 import com.danilkomyshev.pokedex.entity.Pokemon
 import com.danilkomyshev.pokedex.network.PokeService
+import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
 
@@ -19,12 +20,20 @@ class PokemonRepository(
             .toSingle()
     }
 
-    fun getFavPokemons(fav : Boolean) : Single<List<PokeListEntry>>{
+    fun getFavPokemons(fav : Int) : Single<List<PokeListEntry>>{
         return pokeDatabaseService.getFavPokemons(fav)
     }
 
-    fun isPokeFav (query: Int) : Boolean{
+    fun isPokeFav (query: Int) : Int{
         return pokeDatabaseService.isPokeFav(query)
+    }
+
+    fun toFavourite (query: Int) : Completable{
+        return pokeDatabaseService.toFavourite(query)
+    }
+
+    fun toUsual (query: Int) : Completable{
+        return pokeDatabaseService.toUsual(query)
     }
 
     fun getEntries(query: String): Single<List<PokeListEntry>> {

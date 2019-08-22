@@ -50,9 +50,25 @@ class PokeDetailsFragment : Fragment() {
             .subscribe ({ pokemon ->
                 Log.i(TAG, "a pokemon loaded: $pokemon")
                 bindPokemon(pokemon)
-                if (pokemonRepository.isPokeFav(entry)){
+                if (pokemonRepository.isPokeFav(entry) == 1){
                     binding.fabFavOff.hide()
                     binding.fabFavOn.show()
+                    binding.fabFavOn.setOnClickListener {
+                        this.binding.fabFavOn.hide()
+                        this.binding.fabFavOff.show()
+                        pokemonRepository.toUsual(entry)
+                        Log.i(TAG, "Pokemon $entry deleted from favourites now")
+                    }
+                }
+                else{
+                    binding.fabFavOn.hide()
+                    binding.fabFavOff.show()
+                    binding.fabFavOff.setOnClickListener {
+                        this.binding.fabFavOff.hide()
+                        this.binding.fabFavOn.show()
+                        pokemonRepository.toFavourite(entry)
+                        Log.i(TAG, "Pokemon $entry is favourite now")
+                    }
                 }
             },{
                 displayError(it)

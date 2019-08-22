@@ -10,6 +10,7 @@
     <string name="height">Height:</string>
     <string name="weight">Weight</string>
     <string name="favourites">Список избранных покемонов</string>
+    <string name="pokemons">Список покемонов</string>
     <string name="search">search</string>
     <string name="randomed">Случайный покемон</string>
 </resources>

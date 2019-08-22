@@ -8,5 +8,5 @@ data class PokeListEntry constructor(
     @PrimaryKey
     val id: Int,
     val name: String,
-    val isFavourite : Boolean = false
+    val isFavourite : Int = 0
 )
