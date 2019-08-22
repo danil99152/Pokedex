@@ -8,11 +8,11 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.danilkomyshev.pokedex.adapters.PokeAdapter
-import com.danilkomyshev.pokedex.adapters.PokeListClickListener
+import com.danilkomyshev.pokedex.adapters.FavAdapter
+import com.danilkomyshev.pokedex.adapters.FavListClickListener
 import com.danilkomyshev.pokedex.database.PokemonRepository
 import com.danilkomyshev.pokedex.databinding.FragmentFavListBinding
-import com.danilkomyshev.pokedex.entity.PokeListEntry
+import com.danilkomyshev.pokedex.entity.FavouriteList
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.FlowableOnSubscribe
@@ -22,7 +22,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class FavListFragment : Fragment(), PokeListClickListener {
+class FavListFragment : Fragment(), FavListClickListener {
     companion object {
 
         const val TAG = "FavListFragment"
@@ -30,7 +30,7 @@ class FavListFragment : Fragment(), PokeListClickListener {
     @Inject
     lateinit var pokemonRepository: PokemonRepository
     private lateinit var binding: FragmentFavListBinding
-    private lateinit var listAdapter: PokeAdapter
+    private lateinit var listAdapter: FavAdapter
     private lateinit var alertDialog: AlertDialog
     private lateinit var searchView: SearchView
     private val disposables = CompositeDisposable()
@@ -43,7 +43,7 @@ class FavListFragment : Fragment(), PokeListClickListener {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        listAdapter = PokeAdapter(this)
+        listAdapter = FavAdapter(this)
         binding = FragmentFavListBinding.inflate(inflater, container, false)
         binding.favList.adapter = listAdapter
 
@@ -56,12 +56,12 @@ class FavListFragment : Fragment(), PokeListClickListener {
         startLoading()
 
         disposables.add(
-            pokemonRepository.getFavPokemons(1)
+            pokemonRepository.getFavPokemons()
                 .applySchedulers()
                 .subscribe({
                     Log.i(TAG, "on load finish. Items loaded: ${it.size}")
                     searchFieldEnabled(true)
-                    setEntries(it)
+                    setFavEntries(it)
                 },
                     {
                         Log.e(TAG, it.toString())
@@ -94,7 +94,7 @@ class FavListFragment : Fragment(), PokeListClickListener {
         }
     }
 
-    private fun setEntries(entries: List<PokeListEntry>) {
+    private fun setFavEntries(entries: List<FavouriteList>) {
         listAdapter.submitList(entries)
         finishLoading(entries.isEmpty())
     }
@@ -138,7 +138,9 @@ class FavListFragment : Fragment(), PokeListClickListener {
 
     private fun randomPoke(){
         disposables.add(
-            pokemonRepository.getFavPokemons(1).applySchedulers().subscribe({
+            pokemonRepository.getFavPokemons()
+                .applySchedulers()
+                .subscribe({
                 val random = (1 .. it.size).random()
                 Log.i("randomPoke", "randomed favourite pokemon: $random")
                 onClick(random)
@@ -182,16 +184,16 @@ class FavListFragment : Fragment(), PokeListClickListener {
     }
 
     private fun queryEntries(query: String) {
-        Log.i(PokeListFragment.TAG, "loading entries for $query ...")
+        Log.i(TAG, "loading entries for $query ...")
         startLoading()
 
         disposables.add(
-            pokemonRepository.getEntries(query)
+            pokemonRepository.getFavEntries(query)
                 .applySchedulers()
                 .subscribe(
                     {
                         Log.i(PokeListFragment.TAG, "on load finish. Favourite pokemons loaded: ${it.size}")
-                        setEntries(it)
+                        setFavEntries(it)
 
                     }, {
                         Log.e(PokeListFragment.TAG, it.toString())

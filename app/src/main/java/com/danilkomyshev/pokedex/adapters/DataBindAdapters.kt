@@ -14,6 +14,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.danilkomyshev.pokedex.entity.FavouriteList
 
 @BindingAdapter(value = ["bind_entry_name"])
 fun TextView.bindEntryName(item: PokeListEntry?) {
@@ -29,6 +30,19 @@ fun TextView.bindEntryNum(item: PokeListEntry?) {
     }
 }
 
+@BindingAdapter(value = ["bind_fav_name"])
+fun TextView.bindFavName(item: FavouriteList?) {
+    item?.let {
+        text = item.name
+    }
+}
+
+@BindingAdapter(value = ["bind_fav_num"])
+fun TextView.bindFavNum(item: FavouriteList?) {
+    item?.let {
+        text = item.id.toString()
+    }
+}
 
 @BindingAdapter(value = ["bind_detail_sprite"])
 fun ImageView.bindSprite(pokemon: Pokemon?) {

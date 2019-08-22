@@ -1,5 +1,6 @@
 package com.danilkomyshev.pokedex.database
 
+import android.annotation.SuppressLint
 import com.danilkomyshev.pokedex.entity.PokeListEntry
 import com.danilkomyshev.pokedex.entity.Pokemon
 import com.danilkomyshev.pokedex.entity.PokemonType
@@ -17,9 +18,10 @@ abstract class Database : RoomDatabase() {
 class MyConverters{
     @TypeConverter
     fun fromTypeToString(value: PokemonType?): String?{
-        return value?.let { it.type }
+        return value?.type
     }
 
+    @SuppressLint("DefaultLocale")
     @TypeConverter
     fun fromStringToType(value: String?): PokemonType?{
         return value?.let { PokemonType.valueOf(it.toUpperCase()) }

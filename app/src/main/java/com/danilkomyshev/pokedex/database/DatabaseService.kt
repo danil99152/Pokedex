@@ -1,6 +1,7 @@
 package com.danilkomyshev.pokedex.database
 
 import android.util.Log
+import com.danilkomyshev.pokedex.entity.FavouriteList
 import com.danilkomyshev.pokedex.entity.PokeListEntry
 import com.danilkomyshev.pokedex.entity.Pokemon
 import io.reactivex.Completable
@@ -17,6 +18,10 @@ class DatabaseService(private val dao: Dao) {
             dao.getEntries(query)
     }
 
+    fun getFavEntries(query: String): Single<List<FavouriteList>> {
+        return dao.getFavEntries(1,query)
+    }
+
     fun getPokemon(entry: Int): Maybe<Pokemon>{
         Log.i("PokeDB", "queueing a pokemon $entry")
         return dao.getPokemon(entry)
@@ -30,14 +35,13 @@ class DatabaseService(private val dao: Dao) {
         return dao.insertPokemon(pokemon)
     }
 
-    fun getFavPokemons(fav: Int) : Single<List<PokeListEntry>> {
-        return if (fav == 1) dao.getFavPokemons(fav)
-        else dao.getAllEntries()
+    fun getFavPokemons() : Single<List<FavouriteList>> {
+        return dao.getFavPokemons(1)
     }
 
-    fun isPokeFav (entry: Int) : Int{
-        return dao.isPokeFav(entry)
-    }
+//    fun isPokeFav (entry: Int) : Int{
+//        return dao.isPokeFav(entry)
+//    }
 
     fun toFavourite (entry: Int) :Completable{
         dao.toFavouritePokeListEntry(entry)

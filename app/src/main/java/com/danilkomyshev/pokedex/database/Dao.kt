@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.danilkomyshev.pokedex.entity.FavouriteList
 import com.danilkomyshev.pokedex.entity.PokeListEntry
 import com.danilkomyshev.pokedex.entity.Pokemon
 import io.reactivex.Completable
@@ -19,11 +20,14 @@ interface Dao {
     @Query("select * from PokeListEntry where id = :query or name like '%' || :query || '%'")
     fun getEntries(query: String): Single<List<PokeListEntry>>
 
+    @Query("select * from PokeListEntry where isFavourite =:fav and id = :query or name like '%' || :query || '%'")
+    fun getFavEntries(fav: Int, query: String): Single<List<FavouriteList>>
+
     @Query("select * from Pokemon where id = :entry")
     fun getPokemon(entry: Int): Maybe<Pokemon>
 
     @Query("select * from PokeListEntry where isFavourite = :fav")
-    fun getFavPokemons(fav: Int): Single<List<PokeListEntry>>
+    fun getFavPokemons(fav: Int): Single<List<FavouriteList>>
 
     @Query("select isFavourite from Pokemon where id = :entry")
     fun isPokeFav(entry: Int): Int

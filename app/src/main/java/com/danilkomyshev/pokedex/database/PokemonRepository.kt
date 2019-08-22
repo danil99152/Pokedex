@@ -1,6 +1,7 @@
 package com.danilkomyshev.pokedex.database
 
 import android.util.Log
+import com.danilkomyshev.pokedex.entity.FavouriteList
 import com.danilkomyshev.pokedex.entity.PokeListEntry
 import com.danilkomyshev.pokedex.entity.Pokemon
 import com.danilkomyshev.pokedex.network.PokeService
@@ -20,13 +21,13 @@ class PokemonRepository(
             .toSingle()
     }
 
-    fun getFavPokemons(fav : Int) : Single<List<PokeListEntry>>{
-        return pokeDatabaseService.getFavPokemons(fav)
+    fun getFavPokemons() : Single<List<FavouriteList>>{
+        return pokeDatabaseService.getFavPokemons()
     }
 
-    fun isPokeFav (query: Int) : Int{
-        return pokeDatabaseService.isPokeFav(query)
-    }
+//    fun isPokeFav (query: Int) : Int{
+//        return pokeDatabaseService.isPokeFav(query)
+//    }
 
     fun toFavourite (query: Int) : Completable{
         return pokeDatabaseService.toFavourite(query)
@@ -38,6 +39,10 @@ class PokemonRepository(
 
     fun getEntries(query: String): Single<List<PokeListEntry>> {
         return pokeDatabaseService.getEntries(query)
+    }
+
+    fun getFavEntries(query: String): Single<List<FavouriteList>> {
+        return pokeDatabaseService.getFavEntries(query)
     }
 
     fun getPokemon(query: Int): Single<Pokemon> {

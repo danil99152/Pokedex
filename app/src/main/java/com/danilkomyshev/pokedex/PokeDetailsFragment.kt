@@ -1,11 +1,13 @@
 package com.danilkomyshev.pokedex
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.danilkomyshev.pokedex.database.PokemonRepository
 import com.danilkomyshev.pokedex.databinding.FragmentPokeDetailsBinding
@@ -43,6 +45,7 @@ class PokeDetailsFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("RestrictedApi")
     private fun loadPokemon(entry: Int) {
         Log.i(TAG, "loading a pokemon with entry: $entry ...")
         disposables.add(pokemonRepository.getPokemon(entry)
@@ -50,24 +53,24 @@ class PokeDetailsFragment : Fragment() {
             .subscribe ({ pokemon ->
                 Log.i(TAG, "a pokemon loaded: $pokemon")
                 bindPokemon(pokemon)
-                if (pokemonRepository.isPokeFav(entry) == 1){
-                    binding.fabFavOff.hide()
-                    binding.fabFavOn.show()
+                if (pokemon.isFavourite == 1) {
+                    binding.fabFavOff.visibility = View.GONE
+                    binding.fabFavOn.visibility = View.VISIBLE
                     binding.fabFavOn.setOnClickListener {
-                        this.binding.fabFavOn.hide()
-                        this.binding.fabFavOff.show()
+                        binding.fabFavOn.hide()
+                        binding.fabFavOff.show()
                         pokemonRepository.toUsual(entry)
                         Log.i(TAG, "Pokemon $entry deleted from favourites now")
                     }
                 }
-                else{
-                    binding.fabFavOn.hide()
-                    binding.fabFavOff.show()
+                else {
+                    binding.fabFavOn.visibility = View.GONE
+                    binding.fabFavOff.visibility = View.VISIBLE
                     binding.fabFavOff.setOnClickListener {
-                        this.binding.fabFavOff.hide()
-                        this.binding.fabFavOn.show()
+                        binding.fabFavOff.hide()
+                        binding.fabFavOn.show()
                         pokemonRepository.toFavourite(entry)
-                        Log.i(TAG, "Pokemon $entry is favourite now")
+                        Log.i(TAG,"Pokemon $entry is favourite now")
                     }
                 }
             },{

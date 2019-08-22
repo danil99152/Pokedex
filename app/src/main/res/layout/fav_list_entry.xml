@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="item"
+                type="com.danilkomyshev.pokedex.entity.FavouriteList"/>
+
+        <variable name="clickListener"
+                type="com.danilkomyshev.pokedex.adapters.FavListClickListener"/>
+    </data>
+    <LinearLayout android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:padding="4dp"
+            android:onClick ="@{() -> clickListener.onClick(item.id)}">
+
+        <TextView
+                android:id="@+id/fav_list_entry_number"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="0"
+                android:textAlignment="center"
+                tools:text="150"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                app:bind_fav_num="@{item}"/>
+        <TextView
+                android:id="@+id/fav_list_entry_text"
+                tools:text="Mewto"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="0"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:textAlignment="center"
+                app:bind_fav_name="@{item}"/>
+    </LinearLayout>
+</layout>
