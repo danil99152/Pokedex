@@ -192,11 +192,11 @@ class FavListFragment : Fragment(), FavListClickListener {
                 .applySchedulers()
                 .subscribe(
                     {
-                        Log.i(PokeListFragment.TAG, "on load finish. Favourite pokemons loaded: ${it.size}")
+                        Log.i(TAG, "on load finish. Favourite pokemons loaded: ${it.size}")
                         setFavEntries(it)
 
                     }, {
-                        Log.e(PokeListFragment.TAG, it.toString())
+                        Log.e(TAG, it.toString())
                         showError(it.toString())
                     }
                 )

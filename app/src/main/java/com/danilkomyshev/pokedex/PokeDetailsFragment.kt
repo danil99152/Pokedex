@@ -45,7 +45,6 @@ class PokeDetailsFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("RestrictedApi")
     private fun loadPokemon(entry: Int) {
         Log.i(TAG, "loading a pokemon with entry: $entry ...")
         disposables.add(pokemonRepository.getPokemon(entry)
@@ -54,22 +53,22 @@ class PokeDetailsFragment : Fragment() {
                 Log.i(TAG, "a pokemon loaded: $pokemon")
                 bindPokemon(pokemon)
                 if (pokemon.isFavourite == 1) {
-                    binding.fabFavOff.visibility = View.GONE
-                    binding.fabFavOn.visibility = View.VISIBLE
+                    binding.fabFavOff.hide()
+                    binding.fabFavOn.show()
                     binding.fabFavOn.setOnClickListener {
+                        pokemonRepository.toUsual(entry)
                         binding.fabFavOn.hide()
                         binding.fabFavOff.show()
-                        pokemonRepository.toUsual(entry)
                         Log.i(TAG, "Pokemon $entry deleted from favourites now")
                     }
                 }
                 else {
-                    binding.fabFavOn.visibility = View.GONE
-                    binding.fabFavOff.visibility = View.VISIBLE
+                    binding.fabFavOn.hide()
+                    binding.fabFavOff.show()
                     binding.fabFavOff.setOnClickListener {
+                        pokemonRepository.toFavourite(entry)
                         binding.fabFavOff.hide()
                         binding.fabFavOn.show()
-                        pokemonRepository.toFavourite(entry)
                         Log.i(TAG,"Pokemon $entry is favourite now")
                     }
                 }

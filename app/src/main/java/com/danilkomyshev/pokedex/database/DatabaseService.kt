@@ -39,11 +39,7 @@ class DatabaseService(private val dao: Dao) {
         return dao.getFavPokemons(1)
     }
 
-//    fun isPokeFav (entry: Int) : Int{
-//        return dao.isPokeFav(entry)
-//    }
-
-    fun toFavourite (entry: Int) :Completable{
+    fun toFavourite (entry: Int) : Completable{
         dao.toFavouritePokeListEntry(entry)
         return dao.toFavouritePokemon(entry)
     }

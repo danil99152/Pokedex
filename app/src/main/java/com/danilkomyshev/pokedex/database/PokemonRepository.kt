@@ -25,10 +25,6 @@ class PokemonRepository(
         return pokeDatabaseService.getFavPokemons()
     }
 
-//    fun isPokeFav (query: Int) : Int{
-//        return pokeDatabaseService.isPokeFav(query)
-//    }
-
     fun toFavourite (query: Int) : Completable{
         return pokeDatabaseService.toFavourite(query)
     }

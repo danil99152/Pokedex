@@ -29,9 +29,6 @@ interface Dao {
     @Query("select * from PokeListEntry where isFavourite = :fav")
     fun getFavPokemons(fav: Int): Single<List<FavouriteList>>
 
-    @Query("select isFavourite from Pokemon where id = :entry")
-    fun isPokeFav(entry: Int): Int
-
     @Query("update Pokemon set isFavourite = 1 where id = :entry")
     fun toFavouritePokemon(entry: Int): Completable
 
